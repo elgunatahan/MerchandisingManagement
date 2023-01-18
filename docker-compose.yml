@@ -1,0 +1,34 @@
+version: '3.4'
+
+networks:
+  merchandisingmanagementapp:
+
+services:
+  api:
+    container_name: merchandising-management-api
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - sqldb
+    environment:
+      - DB_Host=sqldb
+      - DB_Name=MerchandisingManagementApp
+      - DB_SA_PASSWORD=Pass@word
+      - DB_URL=Data Source=sqldb;Initial Catalog=MerchandisingManagementApp;User ID=sa;Password=Pass@word
+    networks:
+      - merchandisingmanagementapp
+  sqldb:
+    container_name: sql-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "8081:1433"
+    networks:
+      - merchandisingmanagementapp
+
