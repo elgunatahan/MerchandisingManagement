@@ -3,6 +3,7 @@ using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Services;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Persistence;
@@ -26,6 +27,7 @@ namespace CoreTests.Services
 
             var exception = await action.Should().ThrowAsync<ProblemDetailsException>();
             exception.And.Value.Type.Should().Be("category-not-found");
+            exception.And.Value.Status.Should().Be(StatusCodes.Status422UnprocessableEntity);
 
         }
 

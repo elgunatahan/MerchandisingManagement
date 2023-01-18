@@ -15,9 +15,6 @@ services:
     depends_on:
       - sqldb
     environment:
-      - DB_Host=sqldb
-      - DB_Name=MerchandisingManagementApp
-      - DB_SA_PASSWORD=Pass@word
       - DB_URL=Data Source=sqldb;Initial Catalog=MerchandisingManagementApp;User ID=sa;Password=Pass@word
     networks:
       - merchandisingmanagementapp

@@ -3,6 +3,7 @@ using Domain.Common.Filters;
 using Domain.Entities;
 using Domain.Interfaces;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -33,6 +34,7 @@ namespace CoreTests.Commands.UpdateProduct
 
             var exception = await action.Should().ThrowAsync<ProblemDetailsException>();
             exception.And.Value.Type.Should().Be("product-not-found");
+            exception.And.Value.Status.Should().Be(StatusCodes.Status404NotFound);
         }
 
         [Test]

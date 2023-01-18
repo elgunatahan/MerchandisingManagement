@@ -86,24 +86,5 @@ namespace Application.UnitTests.Queries.SearchProduct
             secondItem.StockQuantity.Should().Be(secondProductStock);
             secondItem.Title.Should().Be(secondProductTitle);
         }
-
-        //[Test]
-        //public async Task it_should_throw_when_product_not_found()
-        //{
-        //    DbContextOptions<MerchandisingManagementContext> options = new DbContextOptionsBuilder<MerchandisingManagementContext>()
-        //                                      .UseInMemoryDatabase(Guid.NewGuid().ToString())
-        //                                      .Options;
-
-
-        //    IMerchandisingManagementContext context = new MerchandisingManagementContext(options);
-
-        //    handler = new SearchProductQueryHandler(context);
-
-        //    Func<Task> action = async () => await handler.Handle(new SearchProductQuery { Id = 1 }, CancellationToken.None);
-
-        //    var exception = await action.Should().ThrowAsync<ProblemDetailsException>();
-        //    exception.And.Value.Type.Should().Be("product-not-found");
-        //}
-
     }
 }

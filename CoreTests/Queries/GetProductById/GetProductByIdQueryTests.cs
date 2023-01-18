@@ -3,6 +3,7 @@ using Domain.Common.Filters;
 using Domain.Entities;
 using Domain.Interfaces;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Persistence;
@@ -55,7 +56,7 @@ namespace Application.UnitTests.Queries.GetCampaignOfferById
 
             var exception = await action.Should().ThrowAsync<ProblemDetailsException>();
             exception.And.Value.Type.Should().Be("product-not-found");
+            exception.And.Value.Status.Should().Be(StatusCodes.Status404NotFound);
         }
-
     }
 }

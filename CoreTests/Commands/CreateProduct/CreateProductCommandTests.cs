@@ -3,6 +3,7 @@ using Domain.Common.Filters;
 using Domain.Entities;
 using Domain.Interfaces;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -38,6 +39,7 @@ namespace CoreTests.Commands.CreateProduct
 
             var exception = await action.Should().ThrowAsync<ProblemDetailsException>();
             exception.And.Value.Type.Should().Be("product-already-exist");
+            exception.And.Value.Status.Should().Be(StatusCodes.Status409Conflict);
         }
 
         [Test]

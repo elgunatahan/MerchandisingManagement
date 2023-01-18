@@ -14,12 +14,7 @@
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.13">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.13" />
-      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
     </ItemGroup>

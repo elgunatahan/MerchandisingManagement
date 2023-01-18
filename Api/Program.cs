@@ -94,22 +94,21 @@ builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
 var app = builder.Build();
 
+var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+    {
+        c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+    }
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
-        {
-            c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-        }
-    });
-
     app.UseDeveloperExceptionPage();
-
 }
 
 app.UseHttpsRedirection();
