@@ -19,9 +19,10 @@ namespace Application.Queries.GetProductById
 
         public async Task<GetProductByIdRepresentation> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            Product product = await _merchandisingManagementContext.Products.Include(x=>x.Category).AsNoTracking().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            if(product == null)
+            Product product = await _merchandisingManagementContext.Products.Include(x => x.Category).AsNoTracking().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+
+            if (product == null)
             {
                 ProblemDetails problemDetails = new ProblemDetails()
                 {
@@ -46,6 +47,8 @@ namespace Application.Queries.GetProductById
                 StockQuantity = product.StockQuantity,
                 UpdatedAt = product.UpdatedAt
             };
+
+
         }
     }
 }

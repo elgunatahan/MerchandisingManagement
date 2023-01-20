@@ -4,7 +4,7 @@ namespace Domain.Entities
 {
     public class Product
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public virtual Category Category { get; private set; }
 
@@ -29,6 +29,11 @@ namespace Domain.Entities
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
+        public Product()
+        {
+
+        }
+
         public Product(int? categoryId, string description, int stockQuantity, string title)
         {
             CategoryId = categoryId;
@@ -50,6 +55,8 @@ namespace Domain.Entities
             CategoryId = categoryId;
             Description = description;
             StockQuantity = stockQuantity;
+            UpdatedAt = DateTime.UtcNow;
+            UpdatedBy = "MerchandisingManagementApi";
         }
     }
 }

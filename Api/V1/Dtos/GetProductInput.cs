@@ -6,7 +6,7 @@ namespace Api.V1.Dtos
     public class GetProductInput
     {
         [FromRoute(Name = "id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         internal GetProductByIdQuery ToQuery()
         {

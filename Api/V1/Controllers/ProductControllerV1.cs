@@ -33,8 +33,16 @@ namespace Api.V1.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> CreateProduct([FromQuery] CreateProductInput input, CancellationToken cancellationToken)
         {
-            CreateProductRepresentation response = await _mediator.Send(input.ToCommand(), cancellationToken);
-            return Created($"v1/products/{response.Id}", response);
+            try
+            {
+
+                CreateProductRepresentation response = await _mediator.Send(input.ToCommand(), cancellationToken);
+                return Created($"v1/products/{response.Id}", response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>

@@ -4,7 +4,7 @@ namespace Application.Commands.UpdateProduct
 {
     public class UpdateProductCommand : IRequest<Unit>
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public int? CategoryId { get; set; }
 

@@ -1,20 +1,26 @@
-﻿using Domain.Common.Filters;
+﻿using Domain.Common.Factories;
+using Domain.Common.Filters;
 using Domain.Entities;
+using Domain.Events;
 using Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Transactions;
 
 namespace Application.Commands.CreateProduct
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, CreateProductRepresentation>
     {
+        private readonly IOutboxMessageFactory _outboxMessageFactory;
         private readonly IMerchandisingManagementContext _merchandisingManagementContext;
         private readonly IProductService _productService;
 
-        public CreateProductCommandHandler(IMerchandisingManagementContext merchandisingManagementContext, IProductService productService)
+        public CreateProductCommandHandler(IOutboxMessageFactory outboxMessageFactory, IMerchandisingManagementContext merchandisingManagementContext, IProductService productService)
         {
+            _outboxMessageFactory = outboxMessageFactory;
             _merchandisingManagementContext = merchandisingManagementContext;
             _productService = productService;
         }
@@ -43,8 +49,28 @@ namespace Application.Commands.CreateProduct
 
             _merchandisingManagementContext.Products.Add(product);
 
-            await _merchandisingManagementContext.SaveChangesAsync(cancellationToken);
+            IExecutionStrategy executionStrategy = _merchandisingManagementContext.CreateExecutionStrategy();
+            await executionStrategy.ExecuteAsync(async () =>
+            {
+                using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    await _merchandisingManagementContext.SaveChangesAsync(cancellationToken);
 
+                    ProductCreated productCreated = new ProductCreated()
+                    {
+                        Id = product.Id,
+                    }; 
+                    
+                    OutboxMessage outboxMessage = _outboxMessageFactory.From(productCreated, product.CreatedAt);
+
+                    _merchandisingManagementContext.OutboxMessages.Add(outboxMessage);
+
+                    await _merchandisingManagementContext.SaveChangesAsync(cancellationToken);
+
+                    scope.Complete();
+                }
+            });
+           
             return new CreateProductRepresentation { Id = product.Id };
         }
     }

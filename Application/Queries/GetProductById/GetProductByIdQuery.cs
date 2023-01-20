@@ -4,6 +4,6 @@ namespace Application.Queries.GetProductById
 {
     public class GetProductByIdQuery : IRequest<GetProductByIdRepresentation>
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
     }
 }

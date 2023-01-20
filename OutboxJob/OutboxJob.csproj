@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>c71da902-4eb3-49e9-aee2-c0093dfed872</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="6.0.2" />
+		<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+		<PackageReference Include="Dapper" Version="2.0.123" />
+		<PackageReference Include="DistributedLock.Redis" Version="1.0.2" />
+		<PackageReference Include="MassTransit" Version="8.0.8" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.0.8" />
+		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+		<PackageReference Include="Polly" Version="7.2.3" />
+		<PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
+		<PackageReference Include="System.ServiceModel.Http" Version="4.10.0" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Application\Application.csproj" />
+	</ItemGroup>
+</Project>

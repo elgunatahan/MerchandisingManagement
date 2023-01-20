@@ -1,4 +1,5 @@
 ﻿using Application.Commands.CreateProduct;
+using Domain.Common.Factories;
 using Domain.Common.Filters;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -25,6 +26,7 @@ namespace CoreTests.Commands.CreateProduct
 
             IMerchandisingManagementContext context = new MerchandisingManagementContext(options);
             Mock<IProductService> productService = new Mock<IProductService>();
+            Mock<IOutboxMessageFactory> outboxMessageFactory = new Mock<IOutboxMessageFactory>();
 
 
             string givenTitle = "test title";
@@ -33,7 +35,7 @@ namespace CoreTests.Commands.CreateProduct
 
             await context.SaveChangesAsync(CancellationToken.None);
 
-            handler = new CreateProductCommandHandler(context, productService.Object);
+            handler = new CreateProductCommandHandler(outboxMessageFactory.Object, context, productService.Object);
 
             Func<Task> action = async () => await handler.Handle(new CreateProductCommand { Title = givenTitle }, CancellationToken.None);
 
@@ -52,8 +54,10 @@ namespace CoreTests.Commands.CreateProduct
 
             IMerchandisingManagementContext context = new MerchandisingManagementContext(options);
             Mock<IProductService> productService = new Mock<IProductService>();
+            Mock<IOutboxMessageFactory> outboxMessageFactory = new Mock<IOutboxMessageFactory>();
+
             string givenTitle = "new test title";
-            handler = new CreateProductCommandHandler(context, productService.Object);
+            handler = new CreateProductCommandHandler(outboxMessageFactory.Object, context, productService.Object);
 
             var result = await handler.Handle(new CreateProductCommand { Title = givenTitle }, CancellationToken.None);
 
@@ -74,13 +78,15 @@ namespace CoreTests.Commands.CreateProduct
 
             IMerchandisingManagementContext context = new MerchandisingManagementContext(options);
             Mock<IProductService> productService = new Mock<IProductService>();
+            Mock<IOutboxMessageFactory> outboxMessageFactory = new Mock<IOutboxMessageFactory>();
+
             string givenTitle = "new test title";
 
             Category category = new Category(10, categoryName);
             context.Categories.Add(category);
             await context.SaveChangesAsync(CancellationToken.None);
 
-            handler = new CreateProductCommandHandler(context, productService.Object);
+            handler = new CreateProductCommandHandler(outboxMessageFactory.Object, context, productService.Object);
 
             var result = await handler.Handle(new CreateProductCommand { Title = givenTitle, CategoryId = category.Id }, CancellationToken.None);
 
@@ -106,8 +112,10 @@ namespace CoreTests.Commands.CreateProduct
                 .Setup(x => x.DecideProductActivity(It.IsAny<Product>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(true);
 
+            Mock<IOutboxMessageFactory> outboxMessageFactory = new Mock<IOutboxMessageFactory>();
+
             string givenTitle = "new test title";
-            handler = new CreateProductCommandHandler(context, productService.Object);
+            handler = new CreateProductCommandHandler(outboxMessageFactory.Object, context, productService.Object);
 
             var result = await handler.Handle(new CreateProductCommand { Title = givenTitle }, CancellationToken.None);
 

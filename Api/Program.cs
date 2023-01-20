@@ -2,6 +2,7 @@ using Api;
 using Api.Configuration;
 using Application.Behaviours;
 using Application.Queries.GetProductById;
+using Domain.Common.Factories;
 using Domain.Common.Filters;
 using Domain.Interfaces;
 using Domain.Services;
@@ -61,6 +62,8 @@ var bootstrapper = new SqlBootstrapper(dbContextOptionsBuilder.Options);
 bootstrapper.Migrate();
 
 builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddSingleton<IOutboxMessageFactory, OutboxMessageFactory>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

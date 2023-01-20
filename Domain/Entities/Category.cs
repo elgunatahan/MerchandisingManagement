@@ -21,6 +21,11 @@ namespace Domain.Entities
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
+        public Category()
+        {
+
+        }
+
         public Category(int minStockQuantity, string name)
         {
             MinStockQuantity = minStockQuantity;

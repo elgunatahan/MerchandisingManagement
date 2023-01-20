@@ -18,6 +18,25 @@ services:
       - DB_URL=Data Source=sqldb;Initial Catalog=MerchandisingManagementApp;User ID=sa;Password=Pass@word
     networks:
       - merchandisingmanagementapp
+  outboxjob:
+    container_name: merchandising-management-outboxjob
+    image: ${DOCKER_REGISTRY-}outboxjob
+    build:
+      context: .
+      dockerfile: OutboxJob/Dockerfile
+    ports:
+      - "8082:82"
+    depends_on:
+      - sqldb
+      - rabbitmq
+      - redis
+    environment:
+      - DB_URL=Data Source=sqldb;Initial Catalog=MerchandisingManagementApp;User ID=sa;Password=Pass@word
+      - RABBITMQ_HOST=rabbitmq
+      - REDIS_HOST=redis
+      - ASPNETCORE_URLS=http://+:82
+    networks:
+      - merchandisingmanagementapp
   sqldb:
     container_name: sql-db
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -25,7 +44,27 @@ services:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
     ports:
-      - "8081:1433"
+      - "1433:1433"
+    networks:
+      - merchandisingmanagementapp
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - merchandisingmanagementapp
+  redis:
+    container_name: redis
+    image: redis:4.0.11-alpine
+    restart: always
+    ports:
+      - "6379:6379"
     networks:
       - merchandisingmanagementapp
 
