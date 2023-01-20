@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Entities
 {
     public class Product
     {
@@ -23,6 +25,9 @@
         public DateTime? UpdatedAt { get; private set; }
         
         public string UpdatedBy { get; private set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
 
         public Product(int? categoryId, string description, int stockQuantity, string title)
         {

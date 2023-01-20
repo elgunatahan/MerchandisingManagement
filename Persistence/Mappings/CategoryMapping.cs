@@ -17,6 +17,9 @@ namespace Persistence.Mappings
             builder.Property(p => p.CreatedBy).HasColumnType("nvarchar(256)").IsRequired();
             builder.Property(p => p.UpdatedAt).HasColumnType("datetime");
             builder.Property(p => p.UpdatedBy).HasColumnType("nvarchar(256)");
+
+            builder.Property(p => p.RowVersion).IsRowVersion();
+            builder.Property(p => p.RowVersion).IsConcurrencyToken().ValueGeneratedOnAddOrUpdate();
         }
     }
 }

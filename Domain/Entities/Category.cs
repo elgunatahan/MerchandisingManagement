@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Entities
 {
     public class Category
     {
@@ -15,6 +17,9 @@
         public DateTime? UpdatedAt { get; private set; }
 
         public string UpdatedBy { get; private set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
 
         public Category(int minStockQuantity, string name)
         {

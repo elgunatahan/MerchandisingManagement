@@ -23,6 +23,9 @@ namespace Persistence.Mappings
             builder.Property(p => p.UpdatedAt).HasColumnType("datetime2");
             builder.Property(p => p.UpdatedBy).HasColumnType("nvarchar(256)");
 
+            builder.Property(p => p.RowVersion).IsRowVersion();
+            builder.Property(p => p.RowVersion).IsConcurrencyToken().ValueGeneratedOnAddOrUpdate();
+
             builder.HasOne(m => m.Category)
                 .WithMany()
                 .HasForeignKey(m => m.CategoryId);
